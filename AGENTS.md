@@ -1,169 +1,305 @@
-# Jellyfin Vue Feature Parity – Agent Tasks
+# AGENTS.md
 
-**Objective:**  
-Upgrade the `jellyfin-vue` frontend ([jellyfin/jellyfin-vue](https://github.com/jellyfin/jellyfin-vue)) to full feature parity with Jellyfin’s latest stable web client. Each task below is ordered by priority, from foundational refactors to polish work.
+**Objective:**
+Upgrade the `jellyfin-vue` frontend to full feature parity with Jellyfin’s stable web client. This file defines each task with metadata and subtasks, enabling Codex agents to execute them precisely.
+
+---
 
 ## Agent Tasks Breakdown
 
-### 1. UI Framework Refactor – Finish Vuetify Removal (Prerequisite)
-- **Description:**  
-  Migrate all legacy Vuetify components to the new in‑house Vue component library. Replace menus, dialogs, forms, buttons, lists, etc., and fix any layout/style regressions.
-- **Required Capabilities:**  
-  Vue.js component knowledge; familiarity with Vuetify → custom‑component mappings; large‑scale refactoring and UI testing.
-- **Dependencies:**  
-  Complete before or alongside all feature tasks to avoid duplicate work.
-- **Related Links:**  
-  [Issue #2563 – Replace Vuetify with in‑house components](https://github.com/jellyfin/jellyfin-vue/issues/2563)
-- **Agent Role:**  
-  UI Agent
+### Task 1: UI Framework Refactor – Finish Vuetify Removal (Prerequisite)
 
-### 2. Implement Admin Dashboard & Settings Pages
-- **Description:**  
-  Build full admin interfaces:
-    - User Management (list/create/edit/delete users; set permissions)  
-    - Library Management (add/edit/delete libraries; scan control)  
-    - Server Configuration (playback, networking, metadata, stats)  
-    - Plugin Management (list, configure, install)  
-    - Scheduled Tasks (view/run/change schedules)
-- **Required Capabilities:**  
-  Vue UI development; REST integration with Jellyfin admin APIs; forms and tables.
-- **Dependencies:**  
-  Relies on the new component library from Task 1.
-- **Related Links:**  
-  [Issue #1977 – Admin options greyed out](https://github.com/jellyfin/jellyfin-vue/issues/1977)
-- **Agent Role:**  
-  UI Agent
+* **Description:** Replace all legacy Vuetify components in templates and scripts with the new in-house Base component library.
 
-### 3. Build User Profile & Preferences Interface
-- **Description:**  
-  Allow users to edit their own profile: display name, avatar, password; select theme (light/dark); choose language/region; set playback defaults (subtitle/audio).
-- **Required Capabilities:**  
-  Vue form/UI; REST calls for user profile and password endpoints; global state for theme/language.
-- **Dependencies:**  
-  Component library from Task 1; patterns from Task 2.
-- **Agent Role:**  
-  UI Agent
+* **Required Capabilities:** jscodeshift, AST transforms for Vue SFCs (using `@vue/compiler-sfc`/`compiler-dom`), MagicString manipulation, familiarity with Base component API.
 
-### 4. Media Metadata Editing (Titles/Details and Images)
-- **Description:**  
-  Enable in‑UI editing of media item metadata and artwork:
-    - Edit Metadata Dialog (title, description, year, genres, etc.)  
-    - Edit Images (upload or URL for poster/backdrop/banner; reset to default)  
-    - Success/error feedback (toasts)
-- **Required Capabilities:**  
-  Vue forms and file inputs; REST integration with `/Items/{itemId}` and `/Items/{itemId}/Images/{type}`; permission checks.
-- **Dependencies:**  
-  Component library from Task 1; admin/settings patterns from Tasks 2–3.
-- **Related Links:**  
-  *None (user‑reported gap)*
-- **Agent Role:**  
-  Metadata Agent
+* **Dependencies:** None (foundational).
 
-### 5. Verify & Improve Playlist Management
-- **Description:**  
-  Complete playlist CRUD and interaction:
-    - Create/Delete playlists  
-    - “Add to Playlist” action on items  
-    - Remove items from playlist  
-    - Play/shuffle entire playlist; (optional) reorder entries
-- **Required Capabilities:**  
-  Vue UI for context menus and dialogs; REST calls to `/Playlists` endpoints.
-- **Dependencies:**  
-  Component library from Task 1; metadata editing patterns from Task 4.
-- **Related Links:**  
-  [Issue #1819 – Playlists not showing items (fixed)](https://github.com/jellyfin/jellyfin-vue/issues/1819)
-- **Agent Role:**  
-  UI Agent
+* **Agent Role:** UI Agent
 
-### 6. Implement Photo Gallery & Image Viewer
-- **Description:**  
-  Add support for photo libraries:
-    - Thumbnail grid with sorting (date, name)  
-    - Full‑screen lightbox with navigation and zoom  
-    - (Optional) slideshow mode
-- **Required Capabilities:**  
-  Vue gallery/lightbox components; lazy‑loading for large collections.
-- **Dependencies:**  
-  Component library from Task 1.
-- **Related Links:**  
-  [Roadmap discussion #278](https://github.com/jellyfin/jellyfin-vue/discussions/278)
-- **Agent Role:**  
-  UI Agent
+* [ ] **1.1 AST Template Codemod**
 
-### 7. Add Audiobook Library Support
-- **Description:**  
-  Integrate audiobooks:
-    - List titles/authors like music albums  
-    - Detail page with chapter list and resume position  
-    - Audio player tweaks for long‑form content and chapter seeking
-- **Required Capabilities:**  
-  Audio playback management (resume/chapter); Vue UI for library and detail views.
-- **Dependencies:**  
-  Component library from Task 1; gallery patterns from Task 6.
-- **Related Links:**  
-  *None (known gap where library appears empty)*
-- **Agent Role:**  
-  Playback Agent
+  * *Sub-description:* Parse `<template>` with AST and rename every `<v-*>`/`<V*>` tag to `Base*` equivalents while preserving attributes, directives, slots, and children.
 
-### 8. Enhance Subtitle and Audio Track Selection
-- **Description:**  
-  Enable track switching in video playback:
-    - Subtitle menu (list/toggle internal & external tracks)  
-    - Audio track menu (switch languages/streams)  
-    - (Optional) external subtitle upload if supported by stable UI
-- **Required Capabilities:**  
-  Video player integration (HTML5 `textTracks` or custom API); parsing stream metadata from Jellyfin.
-- **Dependencies:**  
-  Component library from Task 1; playback controls from Task 7.
-- **Related Links:**  
-  [Issue #2603 – Subtitle selector greyed out](https://github.com/jellyfin/jellyfin-vue/issues/2603)  
-  [Issue #2484 – Audio track switching bug](https://github.com/jellyfin/jellyfin-vue/issues/2484)
-- **Agent Role:**  
-  Playback Agent
+* [ ] **1.2 Prop API Mapping Codemod**
 
-### 9. Refine Now Playing Queue & Playback Controls
-- **Description:**  
-  Polish music playback UX:
-    - Up Next queue display and management (reorder/remove/clear)  
-    - Shuffle & repeat controls  
-    - Fullscreen music player with album art and queue access
-- **Required Capabilities:**  
-  Playback state management; interactive queue UI.
-- **Dependencies:**  
-  Component library from Task 1; track selection from Task 8.
-- **Related Links:**  
-  [Roadmap discussion #278](https://github.com/jellyfin/jellyfin-vue/discussions/278)
-- **Agent Role:**  
-  Playback Agent
+  * *Sub-description:* Identify and rewrite Vuetify-specific props (e.g., `color="primary"`, `dense`, `outlined`) to new Base prop names (e.g., `variant="primary"`, `size="sm`).
 
-### 10. Complete Live TV Support
-- **Description:**  
-  Build full Live TV/DVR interface:
-    - Channel listing with logos and now/next info  
-    - EPG grid view  
-    - Live stream playback controls  
-    - DVR scheduling and recorded program management
-- **Required Capabilities:**  
-  Video streaming integration (HLS); UI grid/timeline components; REST calls to Live TV APIs.
-- **Dependencies:**  
-  Component library from Task 1; playback refinements from Task 9.
-- **Related Links:**  
-  [Issue #2592 – Empty Live TV category](https://github.com/jellyfin/jellyfin-vue/issues/2592)  
-  [Issue #1848 – Incorrect Live TV content](https://github.com/jellyfin/jellyfin-vue/issues/1848)
-- **Agent Role:**  
-  Playback Agent
+* [ ] **1.3 Visual Style Fixes**
 
-### 11. Resolve Performance & Stability Issues
-- **Description:**  
-  Final polish to match stable UI performance and reliability:
-    - Fix memory leaks (Issue #2028)  
-    - Implement client‑side caching and optimize navigation  
-    - QA across all flows to catch crashes and UI bugs
-- **Required Capabilities:**  
-  Vue performance profiling; memory‑leak debugging; caching strategies.
-- **Dependencies:**  
-  All feature tasks complete so profiling covers every code path.
-- **Related Links:**  
-  [Issue #2028 – Memory leak](https://github.com/jellyfin/jellyfin-vue/issues/2028)
-- **Agent Role:**  
-  UI Agent
+  * *Sub-description:* Inject Tailwind/shadcn utility classes or Base layout wrappers to restore spacing, gutters, and grid behavior lost after removing Vuetify defaults.
+
+* [ ] **1.4 Behavioral Parity Fixes**
+
+  * *Sub-description:* Update usage of `v-dialog`, `v-menu`, `v-form` etc. to match Base component behaviors: focus trapping, transitions, validation hooks, open/close patterns.
+
+### Task 2: Implement Admin Dashboard & Settings Pages
+
+* **Description:** Build complete administrator interfaces for server management.
+
+* **Required Capabilities:** Vue 3 routing, component composition, REST integration with Jellyfin admin APIs.
+
+* **Dependencies:** Task 1.
+
+* **Agent Role:** UI Agent
+
+* [ ] **2.1 Scaffold Admin Routes**
+
+  * *Sub-description:* Create `src/views/admin/` with nested routes for Users, Libraries, Server Settings, Plugins, Scheduled Tasks.
+
+* [ ] **2.2 User Management Component**
+
+  * *Sub-description:* Build `UserManagement.vue` to list/create/edit/delete users with calls to `/Users` endpoints and proper form validation.
+
+* [ ] **2.3 Library Management Component**
+
+  * *Sub-description:* Build `LibraryManagement.vue` for adding, editing, scanning, and removing libraries via `/Libraries` endpoints.
+
+* [ ] **2.4 Server Settings Component**
+
+  * *Sub-description:* Build `ServerSettings.vue` to configure playback, networking, metadata, and server statistics.
+
+* [ ] **2.5 Plugin & Tasks Management**
+
+  * *Sub-description:* Build `PluginManagement.vue` and `ScheduledTasks.vue` for plugin installation/configuration and task scheduling control.
+
+### Task 3: Build User Profile & Preferences Interface
+
+* **Description:** Allow users to manage their own profile and preferences.
+
+* **Required Capabilities:** Vue forms, reactive state management, REST API calls to `/Users/{userId}/Profile` and password endpoints.
+
+* **Dependencies:** Task 1.
+
+* **Agent Role:** UI Agent
+
+* [ ] **3.1 Profile Details View**
+
+  * *Sub-description:* Enable editing display name, avatar upload, and password change.
+
+* [ ] **3.2 Theme Toggle**
+
+  * *Sub-description:* Expose light/dark theme switch with persistent user setting.
+
+* [ ] **3.3 Language & Region Settings**
+
+  * *Sub-description:* Allow selecting UI language and regional format preferences.
+
+* [ ] **3.4 Playback Defaults**
+
+  * *Sub-description:* Add controls for default audio/subtitle preferences (language, on/off state).
+
+### Task 4: Media Metadata Editing (Titles/Details & Images)
+
+* **Description:** Provide in-UI editing of media item metadata and artwork management.
+
+* **Required Capabilities:** Vue component design, file input handling, integration with `/Items/{itemId}` and `/Items/{itemId}/Images/{type}` APIs.
+
+* **Dependencies:** Task 1, Task 2, Task 3.
+
+* **Agent Role:** Metadata Agent
+
+* [ ] **4.1 Metadata Editor Component**
+
+  * *Sub-description:* Create `MetadataEditor.vue` with fields for title, description, release date, genres, rating, etc.
+
+* [ ] **4.2 Image Upload UI**
+
+  * *Sub-description:* Implement file picker or URL input for posters/backdrops/banners with client-side preview and validation.
+
+* [ ] **4.3 API Integration**
+
+  * *Sub-description:* Wire up save actions to the Jellyfin API to update metadata and upload images.
+
+* [ ] **4.4 Feedback Notifications**
+
+  * *Sub-description:* Show toast or snackbar on success/failure of metadata saves.
+
+### Task 5: Verify & Improve Playlist Management
+
+* **Description:** Complete CRUD and UX for user playlists.
+
+* **Required Capabilities:** REST calls for `/Playlists`, UI context-menu integration, list management.
+
+* **Dependencies:** Task 1, Task 4.
+
+* **Agent Role:** UI Agent
+
+* [ ] **5.1 Create/Delete Playlists**
+
+  * *Sub-description:* Implement dialog to create new playlists and option to delete owned playlists.
+
+* [ ] **5.2 Add to Playlist**
+
+  * *Sub-description:* Add context-menu actions on media items to add or remove from playlists.
+
+* [ ] **5.3 Playlist Detail View**
+
+  * *Sub-description:* Display playlist items with play/shuffle controls and optional reorder.
+
+* [ ] **5.4 Rename & Share**
+
+  * *Sub-description:* Allow renaming playlists and (optional) shareable links or export.
+
+### Task 6: Implement Photo Gallery & Image Viewer
+
+* **Description:** Support browsing and viewing photo libraries.
+
+* **Required Capabilities:** Vue UI grid/lazy-loading, lightbox implementation.
+
+* **Dependencies:** Task 1.
+
+* **Agent Role:** UI Agent
+
+* [ ] **6.1 Thumbnail Grid**
+
+  * *Sub-description:* Render photos as thumbnails with sorting and pagination support.
+
+* [ ] **6.2 Lightbox Viewer**
+
+  * *Sub-description:* Full-screen viewer with next/prev nav, zoom controls, and close action.
+
+* [ ] **6.3 Slideshow Mode**
+
+  * *Sub-description:* Optional autoplay slideshow with timing and manual controls.
+
+* [ ] **6.4 Performance Optimization**
+
+  * *Sub-description:* Implement lazy-loading and virtualization for large collections.
+
+### Task 7: Add Audiobook Library Support
+
+* **Description:** Integrate audiobooks with chapter and resume features.
+
+* **Required Capabilities:** Audio playback control, state management for resume props.
+
+* **Dependencies:** Task 1, Task 6.
+
+* **Agent Role:** Playback Agent
+
+* [ ] **7.1 Audiobook List**
+
+  * *Sub-description:* Display audiobook titles and authors similarly to music albums.
+
+* [ ] **7.2 Chapters & Resume**
+
+  * *Sub-description:* Show chapter list in detail view and resume last position.
+
+* [ ] **7.3 Player Tweaks**
+
+  * *Sub-description:* Adjust player UI for long-form audio and chapter-based seeking.
+
+* [ ] **7.4 API Usage**
+
+  * *Sub-description:* Use Jellyfin audiobook endpoints for fetching chapters and positions.
+
+### Task 8: Enhance Subtitle & Audio Track Selection
+
+* **Description:** Enable subtitle and audio track switching during playback.
+
+* **Required Capabilities:** HTML5 video text/audio track APIs, UI overlays in OSD.
+
+* **Dependencies:** Task 1, Task 7.
+
+* **Agent Role:** Playback Agent
+
+* [ ] **8.1 Subtitle Menu**
+
+  * *Sub-description:* List and toggle internal/external subtitle tracks via player OSD.
+
+* [ ] **8.2 Audio Track Menu**
+
+  * *Sub-description:* Switch between audio streams (languages, stereo/surround).
+
+* [ ] **8.3 External Subtitle Support**
+
+  * *Sub-description:* (Optional) Allow file upload for external subtitles.
+
+* [ ] **8.4 Metadata Parsing**
+
+  * *Sub-description:* Ensure API-provided track metadata is parsed and fed to the player.
+
+### Task 9: Refine Now Playing Queue & Playback Controls
+
+* **Description:** Polish music playback UX with queue management and control modes.
+
+* **Required Capabilities:** Playback state management, drag-and-drop or control UI.
+
+* **Dependencies:** Task 1, Task 8.
+
+* **Agent Role:** Playback Agent
+
+* [ ] **9.1 Queue Display**
+
+  * *Sub-description:* Show "Up Next" queue with reorder, remove, and clear features.
+
+* [ ] **9.2 Shuffle & Repeat**
+
+  * *Sub-description:* Implement shuffle and repeat toggles with persistent state.
+
+* [ ] **9.3 Fullscreen Music Player**
+
+  * *Sub-description:* Display album art, current track info, and upcoming queue in a full-screen overlay.
+
+* [ ] **9.4 Visualization & Lyrics**
+
+  * *Sub-description:* (Optional) Add waveform visualizer or lyrics panel if supported.
+
+### Task 10: Complete Live TV & DVR Support
+
+* **Description:** Deliver full live TV and DVR management UX.
+
+* **Required Capabilities:** Video streaming integration (HLS), grid/timeline UI design, DVR API usage.
+
+* **Dependencies:** Task 1, Task 9.
+
+* **Agent Role:** Playback Agent
+
+* [ ] **10.1 Channel Listing**
+
+  * *Sub-description:* Render live TV channels with logos, names, and now/next info.
+
+* [ ] **10.2 EPG Grid**
+
+  * *Sub-description:* Electronic program guide grid with schedule and program details.
+
+* [ ] **10.3 Live Playback**
+
+  * *Sub-description:* Play live streams with pause, seek, and quality controls.
+
+* [ ] **10.4 DVR Management**
+
+  * *Sub-description:* Schedule recordings, list existing recordings, and allow play or delete.
+
+### Task 11: Resolve Performance & Stability Issues
+
+* **Description:** Ensure the Vue client matches stable UI performance and reliability.
+
+* **Required Capabilities:** Performance profiling, memory leak debugging, caching strategies, end-to-end QA.
+
+* **Dependencies:** All previous tasks.
+
+* **Agent Role:** UI Agent
+
+* [ ] **11.1 Memory Leak Fix**
+
+  * *Sub-description:* Profile and remediate memory leaks (e.g., lingering listeners, caches) guided by Issue #2028.
+
+* [ ] **11.2 Client Caching**
+
+  * *Sub-description:* Implement caching for lists and data to minimize redundant fetches.
+
+* [ ] **11.3 Load & Render Optimizations**
+
+  * *Sub-description:* Optimize component lazy-loading, code-splitting, and rendering performance.
+
+* [ ] **11.4 End-to-End QA**
+
+  * *Sub-description:* Conduct comprehensive testing across all features to validate stability and performance.
+
+---
+
+**Usage:**
+
+* Reference tasks/subtasks exactly (e.g., `Task 4.2 Image Upload UI`).
+* Mark progress by converting `[ ]` to `[x]` as items are completed.
