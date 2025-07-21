@@ -1,305 +1,150 @@
 # AGENTS.md
 
-**Objective:**
-Upgrade the `jellyfin-vue` frontend to full feature parity with Jellyfin’s stable web client. This file defines each task with metadata and subtasks, enabling Codex agents to execute them precisely.
+## 1 · Prompt Templates
+
+```md
+### PLAN phase
+Read AGENTS.md and tasks/<id>-<slug>.md.
+
+Goal — Task <id>: <title>.
+
+Phase: PLAN ONLY  
+– Outline the algorithm in ≤12 pseudocode steps.
+
+Strict‑Output:  
+<!-- PLAN ONLY -->  
+<pseudocode>
+```
+
+```text
+### IMPLEMENT phase
+Execute Task <id>: <title> — IMPLEMENT.  
+Return only the full source for every new/updated file.
+```
+
+```text
+### VALIDATE phase
+Run the verification command for Task <id>.  
+Return only failing output (if any).
+```
+
+```text
+### DIFF phase
+Emit a git‑style diff for all changes made in Task <id>.
+## 2 · Definition of Done
+
+A **task** is complete when **all** of the following are true:
+
+1. All changes are limited to the file(s) stated in the task header.
+2. `npm ci && npm run build && npm test` exit with status 0.
+3. The VALIDATE phase emits **no output** (all assertions pass).
+4. No new ESLint or TypeScript errors are introduced.
+5. Any TODO/FIXME added includes a follow‑up Task ID.
 
 ---
 
-## Agent Tasks Breakdown
+## 3 · Tasks
 
-### Task 1: UI Framework Refactor – Finish Vuetify Removal (Prerequisite)
-
-* **Description:** Replace all legacy Vuetify components in templates and scripts with the new in-house Base component library.
-
-* **Required Capabilities:** jscodeshift, AST transforms for Vue SFCs (using `@vue/compiler-sfc`/`compiler-dom`), MagicString manipulation, familiarity with Base component API.
-
-* **Dependencies:** None (foundational).
-
-* **Agent Role:** UI Agent
-
-* [ ] **1.1 AST Template Codemod**
-
-  * *Sub-description:* Parse `<template>` with AST and rename every `<v-*>`/`<V*>` tag to `Base*` equivalents while preserving attributes, directives, slots, and children.
-
-* [ ] **1.2 Prop API Mapping Codemod**
-
-  * *Sub-description:* Identify and rewrite Vuetify-specific props (e.g., `color="primary"`, `dense`, `outlined`) to new Base prop names (e.g., `variant="primary"`, `size="sm`).
-
-* [ ] **1.3 Visual Style Fixes**
-
-  * *Sub-description:* Inject Tailwind/shadcn utility classes or Base layout wrappers to restore spacing, gutters, and grid behavior lost after removing Vuetify defaults.
-
-* [ ] **1.4 Behavioral Parity Fixes**
-
-  * *Sub-description:* Update usage of `v-dialog`, `v-menu`, `v-form` etc. to match Base component behaviors: focus trapping, transitions, validation hooks, open/close patterns.
-
-### Task 2: Implement Admin Dashboard & Settings Pages
-
-* **Description:** Build complete administrator interfaces for server management.
-
-* **Required Capabilities:** Vue 3 routing, component composition, REST integration with Jellyfin admin APIs.
-
-* **Dependencies:** Task 1.
-
-* **Agent Role:** UI Agent
-
-* [ ] **2.1 Scaffold Admin Routes**
-
-  * *Sub-description:* Create `src/views/admin/` with nested routes for Users, Libraries, Server Settings, Plugins, Scheduled Tasks.
-
-* [ ] **2.2 User Management Component**
-
-  * *Sub-description:* Build `UserManagement.vue` to list/create/edit/delete users with calls to `/Users` endpoints and proper form validation.
-
-* [ ] **2.3 Library Management Component**
-
-  * *Sub-description:* Build `LibraryManagement.vue` for adding, editing, scanning, and removing libraries via `/Libraries` endpoints.
-
-* [ ] **2.4 Server Settings Component**
-
-  * *Sub-description:* Build `ServerSettings.vue` to configure playback, networking, metadata, and server statistics.
-
-* [ ] **2.5 Plugin & Tasks Management**
-
-  * *Sub-description:* Build `PluginManagement.vue` and `ScheduledTasks.vue` for plugin installation/configuration and task scheduling control.
-
-### Task 3: Build User Profile & Preferences Interface
-
-* **Description:** Allow users to manage their own profile and preferences.
-
-* **Required Capabilities:** Vue forms, reactive state management, REST API calls to `/Users/{userId}/Profile` and password endpoints.
-
-* **Dependencies:** Task 1.
-
-* **Agent Role:** UI Agent
-
-* [ ] **3.1 Profile Details View**
-
-  * *Sub-description:* Enable editing display name, avatar upload, and password change.
-
-* [ ] **3.2 Theme Toggle**
-
-  * *Sub-description:* Expose light/dark theme switch with persistent user setting.
-
-* [ ] **3.3 Language & Region Settings**
-
-  * *Sub-description:* Allow selecting UI language and regional format preferences.
-
-* [ ] **3.4 Playback Defaults**
-
-  * *Sub-description:* Add controls for default audio/subtitle preferences (language, on/off state).
-
-### Task 4: Media Metadata Editing (Titles/Details & Images)
-
-* **Description:** Provide in-UI editing of media item metadata and artwork management.
-
-* **Required Capabilities:** Vue component design, file input handling, integration with `/Items/{itemId}` and `/Items/{itemId}/Images/{type}` APIs.
-
-* **Dependencies:** Task 1, Task 2, Task 3.
-
-* **Agent Role:** Metadata Agent
-
-* [ ] **4.1 Metadata Editor Component**
-
-  * *Sub-description:* Create `MetadataEditor.vue` with fields for title, description, release date, genres, rating, etc.
-
-* [ ] **4.2 Image Upload UI**
-
-  * *Sub-description:* Implement file picker or URL input for posters/backdrops/banners with client-side preview and validation.
-
-* [ ] **4.3 API Integration**
-
-  * *Sub-description:* Wire up save actions to the Jellyfin API to update metadata and upload images.
-
-* [ ] **4.4 Feedback Notifications**
-
-  * *Sub-description:* Show toast or snackbar on success/failure of metadata saves.
-
-### Task 5: Verify & Improve Playlist Management
-
-* **Description:** Complete CRUD and UX for user playlists.
-
-* **Required Capabilities:** REST calls for `/Playlists`, UI context-menu integration, list management.
-
-* **Dependencies:** Task 1, Task 4.
-
-* **Agent Role:** UI Agent
-
-* [ ] **5.1 Create/Delete Playlists**
-
-  * *Sub-description:* Implement dialog to create new playlists and option to delete owned playlists.
-
-* [ ] **5.2 Add to Playlist**
-
-  * *Sub-description:* Add context-menu actions on media items to add or remove from playlists.
-
-* [ ] **5.3 Playlist Detail View**
-
-  * *Sub-description:* Display playlist items with play/shuffle controls and optional reorder.
-
-* [ ] **5.4 Rename & Share**
-
-  * *Sub-description:* Allow renaming playlists and (optional) shareable links or export.
-
-### Task 6: Implement Photo Gallery & Image Viewer
-
-* **Description:** Support browsing and viewing photo libraries.
-
-* **Required Capabilities:** Vue UI grid/lazy-loading, lightbox implementation.
-
-* **Dependencies:** Task 1.
-
-* **Agent Role:** UI Agent
-
-* [ ] **6.1 Thumbnail Grid**
-
-  * *Sub-description:* Render photos as thumbnails with sorting and pagination support.
-
-* [ ] **6.2 Lightbox Viewer**
-
-  * *Sub-description:* Full-screen viewer with next/prev nav, zoom controls, and close action.
-
-* [ ] **6.3 Slideshow Mode**
-
-  * *Sub-description:* Optional autoplay slideshow with timing and manual controls.
-
-* [ ] **6.4 Performance Optimization**
-
-  * *Sub-description:* Implement lazy-loading and virtualization for large collections.
-
-### Task 7: Add Audiobook Library Support
-
-* **Description:** Integrate audiobooks with chapter and resume features.
-
-* **Required Capabilities:** Audio playback control, state management for resume props.
-
-* **Dependencies:** Task 1, Task 6.
-
-* **Agent Role:** Playback Agent
-
-* [ ] **7.1 Audiobook List**
-
-  * *Sub-description:* Display audiobook titles and authors similarly to music albums.
-
-* [ ] **7.2 Chapters & Resume**
-
-  * *Sub-description:* Show chapter list in detail view and resume last position.
-
-* [ ] **7.3 Player Tweaks**
-
-  * *Sub-description:* Adjust player UI for long-form audio and chapter-based seeking.
-
-* [ ] **7.4 API Usage**
-
-  * *Sub-description:* Use Jellyfin audiobook endpoints for fetching chapters and positions.
-
-### Task 8: Enhance Subtitle & Audio Track Selection
-
-* **Description:** Enable subtitle and audio track switching during playback.
-
-* **Required Capabilities:** HTML5 video text/audio track APIs, UI overlays in OSD.
-
-* **Dependencies:** Task 1, Task 7.
-
-* **Agent Role:** Playback Agent
-
-* [ ] **8.1 Subtitle Menu**
-
-  * *Sub-description:* List and toggle internal/external subtitle tracks via player OSD.
-
-* [ ] **8.2 Audio Track Menu**
-
-  * *Sub-description:* Switch between audio streams (languages, stereo/surround).
-
-* [ ] **8.3 External Subtitle Support**
-
-  * *Sub-description:* (Optional) Allow file upload for external subtitles.
-
-* [ ] **8.4 Metadata Parsing**
-
-  * *Sub-description:* Ensure API-provided track metadata is parsed and fed to the player.
-
-### Task 9: Refine Now Playing Queue & Playback Controls
-
-* **Description:** Polish music playback UX with queue management and control modes.
-
-* **Required Capabilities:** Playback state management, drag-and-drop or control UI.
-
-* **Dependencies:** Task 1, Task 8.
-
-* **Agent Role:** Playback Agent
-
-* [ ] **9.1 Queue Display**
-
-  * *Sub-description:* Show "Up Next" queue with reorder, remove, and clear features.
-
-* [ ] **9.2 Shuffle & Repeat**
-
-  * *Sub-description:* Implement shuffle and repeat toggles with persistent state.
-
-* [ ] **9.3 Fullscreen Music Player**
-
-  * *Sub-description:* Display album art, current track info, and upcoming queue in a full-screen overlay.
-
-* [ ] **9.4 Visualization & Lyrics**
-
-  * *Sub-description:* (Optional) Add waveform visualizer or lyrics panel if supported.
-
-### Task 10: Complete Live TV & DVR Support
-
-* **Description:** Deliver full live TV and DVR management UX.
-
-* **Required Capabilities:** Video streaming integration (HLS), grid/timeline UI design, DVR API usage.
-
-* **Dependencies:** Task 1, Task 9.
-
-* **Agent Role:** Playback Agent
-
-* [ ] **10.1 Channel Listing**
-
-  * *Sub-description:* Render live TV channels with logos, names, and now/next info.
-
-* [ ] **10.2 EPG Grid**
-
-  * *Sub-description:* Electronic program guide grid with schedule and program details.
-
-* [ ] **10.3 Live Playback**
-
-  * *Sub-description:* Play live streams with pause, seek, and quality controls.
-
-* [ ] **10.4 DVR Management**
-
-  * *Sub-description:* Schedule recordings, list existing recordings, and allow play or delete.
-
-### Task 11: Resolve Performance & Stability Issues
-
-* **Description:** Ensure the Vue client matches stable UI performance and reliability.
-
-* **Required Capabilities:** Performance profiling, memory leak debugging, caching strategies, end-to-end QA.
-
-* **Dependencies:** All previous tasks.
-
-* **Agent Role:** UI Agent
-
-* [ ] **11.1 Memory Leak Fix**
-
-  * *Sub-description:* Profile and remediate memory leaks (e.g., lingering listeners, caches) guided by Issue #2028.
-
-* [ ] **11.2 Client Caching**
-
-  * *Sub-description:* Implement caching for lists and data to minimize redundant fetches.
-
-* [ ] **11.3 Load & Render Optimizations**
-
-  * *Sub-description:* Optimize component lazy-loading, code-splitting, and rendering performance.
-
-* [ ] **11.4 End-to-End QA**
-
-  * *Sub-description:* Conduct comprehensive testing across all features to validate stability and performance.
+Below is the fully‑decomposed backlog for Jellyfin‑Vue parity with Jellyfin Web 10.10.7.
+Each checkbox represents a single, file‑scoped task that should take Codex ≤ 15 minutes.
 
 ---
 
-**Usage:**
+### Phase 0 · Environment & Guardrails
 
-* Reference tasks/subtasks exactly (e.g., `Task 4.2 Image Upload UI`).
-* Mark progress by converting `[ ]` to `[x]` as items are completed.
+- [ ] **Task 000 · Ensure Install & Build Succeeds Non‑Interactively** – root `package.json` & scripts. Validate with CI run.
+- [ ] **Task 001 · Minimal Vitest Smoke Harness** – `frontend/vitest.config.ts`, `frontend/tests/smoke.test.ts`.
+- [ ] **Task 002 · Data‑Test Selectors Utility** – `frontend/src/utils/testSelectors.ts` helper.
+- [ ] **Task 003 · Jellyfin Server URL Normalization** – `frontend/src/stores/server.ts`.
+
+### Phase 1 · Core User Flow
+
+#### A · Connect & Auth
+- [ ] **010 · Server Add Form – Basic Validation** – `AddServerForm.vue` (blocked by 003)
+- [ ] **011 · Server Reachability Ping** – `AddServerForm.vue` + `api/server.ts` (blocked by 010)
+- [ ] **012 · Username / Password Auth** – `LoginForm.vue` + `api/auth.ts` (blocked by 011)
+- [ ] **013 · Remember Last Server / Auto‑Reconnect** – `server.ts` store (blocked by 012)
+
+#### B · Library Landing
+- [ ] **020 · Fetch User Libraries** – `stores/libraries.ts` (blocked by 012)
+- [ ] **021 · HomeView Library Tiles** – `HomeView.vue` (blocked by 020)
+- [ ] **022 · Library Route Item Fetch (Paged)** – `LibraryView.vue` (blocked by 021)
+- [ ] **023 · Sort & Filter Controls** – `SortFilterBar.vue` (blocked by 022)
+
+#### C · Item Detail
+- [ ] **030 · Item Detail Fetch & Display** – `ItemDetailView.vue` (blocked by 022)
+- [ ] **031 · Metadata Badges** – `MetadataBadges.vue` (blocked by 030)
+- [ ] **032 · Resume Progress Bar** – `ResumeBar.vue` (blocked by 030)
+
+#### D · Playback (Skeleton & Basic Controls)
+- [ ] **100 · VideoPlayer Mount & Stream Start** – `VideoPlayer.vue` (blocked by 030, 032)
+- [ ] **101 · Playback Error State** – `VideoPlayer.vue` (blocked by 100)
+- [ ] **102 · Transport Controls** – `VideoPlayerControls.vue` (blocked by 100)
+- [ ] **103 · Fullscreen Toggle** – `VideoPlayerControls.vue` + `fullscreen.ts` (blocked by 102)
+- [ ] **104 · Subtitle Track Menu** – `SubtitleMenu.vue` (blocked by 100)
+- [ ] **105 · Audio Track Menu** – `AudioMenu.vue` (blocked by 100)
+- [ ] **106 · Subtitle Off & Burned Indicator** – `SubtitleMenu.vue` (blocked by 104)
+- [ ] **107 · Quality Selector** – `QualityMenu.vue` (blocked by 100)
+- [ ] **108 · Skip Intro Button** – `VideoPlayerControls.vue` + `skipIntro.ts` (blocked by 102)
+- [ ] **109 · Playback Scrobble Reporting** – `VideoPlayer.vue` + `api/playstate.ts` (blocked by 100)
+
+#### E · Resume Sync
+- [ ] **120 · Update Item Resume After Stop** – `playstate.ts` + caches (blocked by 109, 032)
+
+### Phase 2 · Playback Advanced
+- [ ] **121 · Picture‑in‑Picture Toggle** – `VideoPlayer.vue` + `pip.ts` (blocked by 102)
+- [ ] **122 · Cast Menu Skeleton** – `VideoPlayerCast.vue` (new) (blocked by 121)
+- [ ] **123 · Device Discovery Stub** – `castStore.ts` (blocked by 122)
+- [ ] **124 · Chromecast Sender Session** – `castPlayer.ts` (blocked by 123)
+- [ ] **125 · Stats for Nerds OSD** – `VideoPlayerStats.vue` (blocked by 101)
+- [ ] **126 · Detachable Mini‑player** – `MiniPlayer.vue` + router guard (blocked by 100, 109)
+
+### Phase 3 · Music & Audio‑Book UX
+- [ ] **200 · Audio‑only Player Skeleton** – `MusicPlayer.vue` (blocked by 012)
+- [ ] **201 · Now‑Playing Queue Store** – `NowPlayingQueueStore.ts` (blocked by 200)
+- [ ] **202 · Gapless / Auto‑Next** – `MusicPlayer.vue` (blocked by 201)
+- [ ] **203 · Repeat & Shuffle** – `MusicPlayerControls.vue` (blocked by 201)
+- [ ] **204 · Lyrics Panel** – `LyricsPanel.vue` (blocked by 200)
+- [ ] **205 · Album Track Table** – `AlbumView.vue` (blocked by 020)
+
+### Phase 4 · User Settings & Profiles
+- [ ] **300 · Settings Sidebar Skeleton** – `SettingsSidebar.vue`
+- [ ] **301 · Profile Settings** – `ProfileSettings.vue` (blocked by 300)
+- [ ] **302 · Theme Switcher** – `DisplaySettings.vue` (blocked by 300)
+- [ ] **303 · Playback Defaults** – `PlaybackSettings.vue` (blocked by 300)
+- [ ] **304 · Downloads Settings** – `DownloadsSettings.vue` (blocked by 300)
+- [ ] **305 · Parental PIN Dialog** – `ParentalPinDialog.vue` (blocked by 012)
+
+### Phase 5 · Admin, Live TV, SyncPlay, Search, Collections, Accessibility
+
+#### Admin
+- [ ] **400 · Admin Dashboard Read‑Only** – `AdminHome.vue` (blocked by 012)
+- [ ] **401 · Admin User List** – `Users.vue` (blocked by 400)
+- [ ] **402 · Admin Logs Tail** – `Logs.vue` (blocked by 400)
+
+#### Live TV
+- [ ] **410 · EPG Guide Grid** – `Guide.vue` (blocked by 012)
+- [ ] **411 · Recording Schedule CRUD** – `RecordingSchedule.vue` (blocked by 410)
+- [ ] **412 · Recording Playback Route** – `RecordingList.vue` (blocked by 100, 411)
+
+#### SyncPlay (Watch Together)
+- [ ] **420 · Room Creation Dialog** – `RoomCreateDialog.vue` (blocked by 012)
+- [ ] **421 · Room Join Dialog** – `RoomJoinDialog.vue` (blocked by 420)
+- [ ] **422 · WebSocket Transport** – `SyncTransport.ts` (blocked by 102, 421)
+
+#### Search & Collections
+- [ ] **430 · Search Hint Bar** – `SearchBar.vue` (blocked by 012)
+- [ ] **431 · Search Results View** – `SearchView.vue` (blocked by 430)
+- [ ] **432 · Collections Grid** – `Collections.vue` (blocked by 020)
+
+#### Accessibility
+- [ ] **440 · Keyboard Focus Ring** – `a11y/focusRing.ts` + mixin
+- [ ] **441 · Skip Links** – `a11y/skipLinks.vue` (blocked by 440)
+- [ ] **442 · ARIA Live Seek Announcements** – `VideoPlayer.vue` (blocked by 102)
+
+---
+
+> **Parity Target**: Jellyfin Web 10.10.7 stable
+> **Repository Baseline**: upstream `master` + this `AGENTS.md`
+
+```
