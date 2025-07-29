@@ -7,3 +7,7 @@ export default defineConfig({
     environment: 'node'
   }
 });
+
+export default defineConfig({
+  test: {
+  });
