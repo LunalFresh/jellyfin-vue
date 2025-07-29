@@ -49,6 +49,8 @@ import { useTranslation } from 'i18next-vue';
 import { useRouter } from 'vue-router';
 import { remote } from '#/plugins/remote';
 import { jsonConfig } from '#/utils/external-config';
+import { normalizeServerUrl } from '#/stores/server';
+import { useAddServerRules } from './addServerRules';
 
 const router = useRouter();
 const { t } = useTranslation();
@@ -57,9 +59,7 @@ const previousServerLength = remote.auth.addedServers.value;
 const serverUrl = shallowRef('');
 const loading = shallowRef(false);
 
-const rules = [
-  (v: string): boolean | string => !!v.trim() || t('required')
-];
+const rules = useAddServerRules();
 
 /**
  * Attempts a connection to the given server.
@@ -70,7 +70,7 @@ async function connectToServer(): Promise<void> {
   loading.value = true;
 
   try {
-    await remote.auth.connectServer(serverUrl.value);
+    await remote.auth.connectServer(normalizeServerUrl(serverUrl.value));
     await router.push('/server/login');
   } finally {
     loading.value = false;
