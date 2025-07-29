@@ -26,8 +26,7 @@
     "prod": "npm run build && npm run serve",
     "clean": "git clean -fxd",
     "storybook": "storybook dev -p 6006 --config-dir storybook --no-open",
-    "test": "vitest"
-  },
+    "test": "vitest"  },
   "dependencies": {
     "@fontsource-variable/figtree": "5.2.8",
     "@jellyfin-vue/i18n": "*",
@@ -49,6 +48,7 @@
     "i18next": "25.2.1",
     "i18next-vue": "5.3.0",
     "libpgs": "0.8.1",
+    "pinia": "2.1.7",
     "sortablejs": "1.15.6",
     "swiper": "11.2.9",
     "uuid": "11.1.0",
