@@ -96,3 +96,4 @@ sw.js
 packaging/jellyfin-vue*
 
 *storybook.log
+packaging/deb/root
