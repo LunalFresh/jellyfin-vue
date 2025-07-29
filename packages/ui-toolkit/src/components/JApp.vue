@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 /**
- * TODO: Investigate or propose an RFC to allow style tags inside SFCs
+ * TODO: Investigate or propose an RFC to allow style tags inside SFCs (Task 300)
  */
 /**
  * The text color is calculated using: https://codepen.io/devongovett/pen/QwLbRrW and https://x.com/devongovett/status/1863733091409461256

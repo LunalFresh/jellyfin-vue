@@ -266,7 +266,7 @@ export function getImageInfo(
     tag?: string;
   } = {}
 ): ImageUrlInfo {
-  // TODO: Refactor to have separate getPosterImageInfo, getThumbImageInfo and getBackdropImageInfo.
+  // TODO: Refactor to have separate getPosterImageInfo, getThumbImageInfo and getBackdropImageInfo. (Task 020)
   let imgType;
   let imgTag;
   let itemId: string | null | undefined = item.Id;

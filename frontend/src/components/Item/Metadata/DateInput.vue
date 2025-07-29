@@ -8,7 +8,7 @@
       v-model="menu"
       :close-on-content-click="false"
       transition="scale-transition">
-      <!-- TODO: Wait for Vuetify 3 implementation (https://github.com/vuetifyjs/vuetify/issues/13480) -->
+      <!-- TODO: Wait for Vuetify 3 implementation (https://github.com/vuetifyjs/vuetify/issues/13480) (Task 300) -->
       <!-- <v-date-picker :value="value" @change="handleChange" /> -->
     </VMenu>
   </VTextField>

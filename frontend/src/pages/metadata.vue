@@ -3,7 +3,7 @@
     <VCol
       cols="3"
       class="tree-view-container">
-      <!-- TODO: Wait for Vuetify 3 implementation (https://github.com/vuetifyjs/vuetify/issues/13518) -->
+      <!-- TODO: Wait for Vuetify 3 implementation (https://github.com/vuetifyjs/vuetify/issues/13518) (Task 300) -->
       <!-- <v-treeview
         :items="items"
         :load-children="fetchChildItems"

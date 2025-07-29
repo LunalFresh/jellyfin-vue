@@ -9,7 +9,7 @@
         {{ t('refreshMetadata') }}
       </VCardTitle>
       <VDivider />
-      <!-- TODO: Investigate why style is needed for mobile breakpoint -->
+      <!-- TODO: Investigate why style is needed for mobile breakpoint (Task 030) -->
       <VSelect
         v-model="selectedMethod"
         :items="refreshMethods"

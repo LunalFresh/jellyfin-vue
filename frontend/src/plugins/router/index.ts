@@ -19,7 +19,7 @@ export const router = createRouter({
       : createWebHashHistory(),
   routes: [],
   /**
-   * TODO: Fix this, so it only scrolls to the top once suspense resolves
+   * TODO: Fix this, so it only scrolls to the top once suspense resolves (Task 000)
    */
   scrollBehavior(_to, _from, savedPosition) {
     return savedPosition ?? { top: 0 };

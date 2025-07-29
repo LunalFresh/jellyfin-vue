@@ -6,8 +6,8 @@ import { defu } from 'defu';
  * @param object - Target object. This one contains keys that might not be present in defaults
  * @param defaultObject - Sample/default representation of the object that should be used to detect which keys
  * should/shouldn't exist in the target.
- * TODO: Handle deep objects
- */
+ * TODO: Handle deep objects (Task 000)
+*/
 export function mergeExcludingUnknown<T extends object>(
   object: T,
   defaultObject: T

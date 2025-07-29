@@ -1,6 +1,6 @@
 <template>
   <div :class="`skeleton-card ${cardShape}`">
-    <!-- TODO: Wait for Vuetify 3 implementation (https://github.com/vuetifyjs/vuetify/issues/13504) -->
+    <!-- TODO: Wait for Vuetify 3 implementation (https://github.com/vuetifyjs/vuetify/issues/13504) (Task 300) -->
     <!-- <v-skeleton-loader type="image" :boilerplate="boilerplate" />
     <v-skeleton-loader
       v-if="text"

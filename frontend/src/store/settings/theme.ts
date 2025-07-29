@@ -80,7 +80,7 @@ class ThemeSettingsStore extends SyncedStore<ThemeSettingsState, 'typography'> {
     });
 
     /**
-     * TODO: Remove once Vuetify is ripped
+     * TODO: Remove once Vuetify is ripped (Task 300)
      */
     watchImmediate(this.currentTheme, () => {
       globalThis.requestAnimationFrame(() => {

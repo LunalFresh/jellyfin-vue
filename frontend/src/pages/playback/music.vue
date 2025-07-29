@@ -57,7 +57,7 @@
                 </span>
               </VRow>
             </VCol>
-            <!-- TODO: Fix alignment with the end time of TimeSlider -->
+            <!-- TODO: Fix alignment with the end time of TimeSlider (Task 200) -->
             <VCol class="d-flex justify-end">
               <LikeButton
                 v-if="playbackManager.currentItem.value"
