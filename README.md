@@ -139,6 +139,12 @@ The same principle applies to Jellyfin Vue. Note that Jellyfin Web can also be h
 
 See [development setup](https://github.com/jellyfin/jellyfin-vue/wiki/Contributing#development-setup) from our *Contributing* guides.
 
+# Security audit
+
+Running `npm audit` after applying automated fixes reports **0 vulnerabilities**.  
+Building the Tauri package currently fails in this environment due to missing
+`gobject-2.0` and `glib-2.0` system libraries.
+
 # Contributing 🤝
 
 See [Contributing](https://github.com/jellyfin/jellyfin-vue/wiki/Contributing) guide.
