@@ -25,6 +25,7 @@
     "serve": "vite preview --configLoader runner",
     "prod": "npm run build && npm run serve",
     "clean": "git clean -fxd",
+    "test": "vitest run",
     "storybook": "storybook dev -p 6006 --config-dir storybook --no-open"
   },
   "dependencies": {
@@ -48,6 +49,7 @@
     "i18next": "25.2.1",
     "i18next-vue": "5.3.0",
     "libpgs": "0.8.1",
+    "pinia": "2.1.7",
     "sortablejs": "1.15.6",
     "swiper": "11.2.9",
     "uuid": "11.1.0",
