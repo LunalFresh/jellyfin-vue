@@ -85,7 +85,7 @@ const common = (packageName: string) => defineConfig([
     }
   },
   /**
-   * TODO: Re-enable this at some point when the type checking is improved.
+   * TODO: Re-enable this at some point when the type checking is improved. (Task 001)
    * These rules are annoying when using not well-supported TypeScript libraries
    * and imported SFC files are not recognised properly and needs the use of:
    * https://github.com/ota-meshi/typescript-eslint-parser-for-extra-files
@@ -152,7 +152,7 @@ const vue_config = defineConfig([
     delete config.languageOptions?.globals;
     /**
      * DEPRECATED: See https://eslint.vuejs.org/rules/component-tags-order.html#vue-component-tags-order
-     * TODO: Remove when it's removed from the recommended rules
+     * TODO: Remove when it's removed from the recommended rules (Task 001)
      */
     delete config.rules?.['vue/component-tags-order'];
     config.name = `(@jellyfin-vue/configs/lint/typescript-vue - ${config.name}) - Extended config from plugin`;

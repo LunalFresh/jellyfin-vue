@@ -33,7 +33,7 @@ useResizeObserver(el, (entries) => {
 useLayoutStyle(() => ({ 'padding-bottom': height.value }));
 
 /**
- * TODO: Remove this once Vuetify is removed. This component currently causes overflow in login pages
+ * TODO: Remove this once Vuetify is removed. This component currently causes overflow in login pages (Task 300)
  */
 const { mainStyles } = useLayout();
 const left = computed(() => mainStyles.value['--v-layout-left']);

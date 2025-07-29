@@ -25,7 +25,7 @@ import { subtitleSettings } from '#/store/settings/subtitle';
  * == INTERFACES AND TYPES ==
  */
 /**
- * TODO: Provide option for the user to select if subtitles should be rendered by the browser or transcoded in server
+ * TODO: Provide option for the user to select if subtitles should be rendered by the browser or transcoded in server (Task 104)
  * That option must take into account if transcoding is enabled in server (and user has permission to use it as well)
  */
 interface SubtitleExternalTrack extends PlaybackExternalTrack {
@@ -85,7 +85,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched' |
 
   public readonly currentItemParsedSubtitleTracks = computed(() =>
   /**
-   * TODO: There is currently a bug in Jellyfin server when adding external subtitles
+   * TODO: There is currently a bug in Jellyfin server when adding external subtitles (Task 106)
    * may play the incorrect subtitle
    * https://github.com/jellyfin/jellyfin/issues/13198
    */

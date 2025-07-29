@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 /**
- * TODO: Determine proper descriptions for all the media info tranbslation keys provided to the user.
+ * TODO: Determine proper descriptions for all the media info tranbslation keys provided to the user. (Task 030)
  * The used keys are directly taken from Jellyfin Web and they are difficult to understand.
  */
 import { computed } from 'vue';
@@ -95,7 +95,7 @@ const properties = computed(() => {
   p.set(t('mediaInfoVideoPixelFormat'), stream.PixelFormat);
   p.set(t('mediaInfoVideoRefFrames'), stream.RefFrames);
   /**
-   * TODO: What is this?
+   * TODO: What is this? (Task 030)
    */
   p.set('NAL', stream.NalLengthSize);
   p.set(t('mediaInfoGenericIsDefault'), stream.IsDefault ?? false);

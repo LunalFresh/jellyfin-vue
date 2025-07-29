@@ -457,9 +457,9 @@ async function saveMetadata(): Promise<void> {
     useSnackbar(t('saved'), 'success');
   } catch (error) {
     /*
-     * TODO: This whole block should be removed - we should verify that the data is correct client-side before posting to server
+     * TODO: This whole block should be removed - we should verify that the data is correct client-side before posting to server (Task 030)
      * not expecting bad request messages.
-     * TODO: Revise similar blocks like this through the entire codebase.
+     * TODO: Revise similar blocks like this through the entire codebase. (Task 030)
      */
     let errorMessage = t('unexpectedError');
 

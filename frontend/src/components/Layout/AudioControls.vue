@@ -112,7 +112,7 @@ import { getItemDetailsLink } from '#/utils/items';
 </script>
 
 <style scoped>
-/* TODO: This class was extracted from VAvatar. Remove this once a JAvatar component is created */
+/* TODO: This class was extracted from VAvatar. Remove this once a JAvatar component is created (Task 200) */
 .img {
   align-items: center;
   display: inline-flex;

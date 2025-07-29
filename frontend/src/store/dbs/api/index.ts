@@ -29,7 +29,7 @@ const apiDb = wrap<IApiDatabase>(new ApiDatabase());
  * in the database so components can subscribe to updates.
  * We use SessionStorage so it's refreshed across tabs.
  *
- * TODO: Simplify this once PWA is implemented, perhaps switch to
+ * TODO: Simplify this once PWA is implemented, perhaps switch to (Task 000)
  * BroadcastChannel
  */
 export const lastUpdatedIds = useSessionStorage<string[]>('lastUpdatedIds', [], { shallow: true });

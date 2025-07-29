@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 /**
- * TODO: CSS still depends on Vuetify, remove scoped styles after removal
+ * TODO: CSS still depends on Vuetify, remove scoped styles after removal (Task 300)
  */
 import { ref, provide } from 'vue';
 import { useLayout } from 'vuetify';

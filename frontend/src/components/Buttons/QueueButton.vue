@@ -87,7 +87,7 @@ const listHeight = computed(() => `${size}vh`);
 
 const sourceText = computed(() => {
   /**
-   * TODO: Properly refactor this once search and other missing features are implemented, as discussed in
+   * TODO: Properly refactor this once search and other missing features are implemented, as discussed in (Task 430)
    * https://github.com/jellyfin/jellyfin-vue/pull/609
    */
   const unknownSource = t('unknown');

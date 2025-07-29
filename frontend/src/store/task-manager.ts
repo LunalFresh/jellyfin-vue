@@ -115,7 +115,7 @@ class TaskManagerStore extends CommonStore<TaskManagerState, 'tasks'> {
         && isStr(data.ItemId)
         && 'Progress' in data
       ) {
-        // TODO: Verify all the different tasks that this message may belong to - here we assume libraries.
+        // TODO: Verify all the different tasks that this message may belong to - here we assume libraries. (Task 020)
 
         const progress = Number(data.Progress);
         const taskPayload = this.getTask(data.ItemId);

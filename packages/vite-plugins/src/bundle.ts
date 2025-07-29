@@ -8,7 +8,7 @@ import Sonda from 'sonda/rollup';
 import { normalizePath, preview, type Plugin } from 'vite';
 
 /**
- * TODO: Track https://github.com/vitejs/vite/pull/19005 so we can pull Vite's default config instead
+ * TODO: Track https://github.com/vitejs/vite/pull/19005 so we can pull Vite's default config instead (Task 001)
  * of hardcoding it here.
  */
 const defaultConfig = { build: { outDir: 'dist' } };

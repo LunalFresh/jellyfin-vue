@@ -46,7 +46,7 @@ function getGlobalMaxVideoBitrate(): number | undefined {
   }
 
   /*
-   * TODO: These values are taken directly from Jellyfin-web.
+   * TODO: These values are taken directly from Jellyfin-web. (Task 107)
    * The source of them needs to be investigated.
    */
   if (isPs4()) {
@@ -104,7 +104,7 @@ export function getAacCodecProfileConditions(
       .canPlayType('video/mp4; codecs="avc1.640029, mp4a.40.5"')
       .replace(/no/, '')
   ) {
-    // TODO: This needs to become part of the stream url in order to prevent stream copy
+    // TODO: This needs to become part of the stream url in order to prevent stream copy (Task 107)
     conditions.push(
       createProfileCondition(
         ProfileConditionValue.AudioProfile,
@@ -187,7 +187,7 @@ export function getCodecProfiles(
     (isTizen()
       || videoTestElement
         .canPlayType('video/mp4; codecs="avc1.6e0033"')
-        .replace(/no/, '')) // TODO: These tests are passing in Safari, but playback is failing
+        .replace(/no/, '')) // TODO: These tests are passing in Safari, but playback is failing (Task 107)
         && (!isApple() || !isWebOS() || !(isEdge() && !isChromiumBased()))
   ) {
     h264Profiles += '|high 10';

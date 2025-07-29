@@ -20,7 +20,7 @@ class ApiDatabase extends BaseDb {
     id ? (await this.items.get(id))?.__raw : undefined;
 
   public readonly getItemsById = async (ids: BaseItemDto['Id'][]): Promise<(BaseItemDto | undefined)[]> =>
-    // @ts-expect-error - TODO: Fix this upstream at SDK
+    // @ts-expect-error - TODO: Fix this upstream at SDK (Task 000)
     (await this.items.bulkGet(ids)).map(item => item?.__raw);
 
   private readonly _getCachedResponse = async (funcName: string, params: string) =>

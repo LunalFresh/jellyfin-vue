@@ -22,7 +22,7 @@ import { remote } from '#/plugins/remote';
 import { getUserImageUrl } from '#/utils/images';
 
 /**
- * TODO: In reality, rounded is unnecessary since it can be passed as fallthrough,
+ * TODO: In reality, rounded is unnecessary since it can be passed as fallthrough, (Task 300)
  * but it needs to be here since VAvatar expects a truly boolean and fallthroughs are passed as strings.
  * It also can't be passed as a prop, it needs to not specify a prop for it to work properly
  * in AppBar's button.

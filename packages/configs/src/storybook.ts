@@ -19,7 +19,7 @@ export default {
       }
     }
   },
-  // TODO: Needed because vue-docgen-plugin doesn't recognize functional components
+  // TODO: Needed because vue-docgen-plugin doesn't recognize functional components (Task 001)
   viteFinal(config) {
     // @ts-expect-error - Incorrect type in Vite config, but this is a temporal workaround regardless
     const vueDocgenIndex = config.plugins?.findIndex(({ name }) => name === 'storybook:vue-docgen-plugin');

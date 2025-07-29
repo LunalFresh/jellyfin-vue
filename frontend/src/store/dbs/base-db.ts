@@ -22,7 +22,7 @@ export abstract class BaseDb extends Dexie {
       this.transaction('rw!', ...args);
 
   public readonly deleteStaleRecords = () =>
-    // @ts-expect-error - TODO: Fix this upstream at type-fest
+    // @ts-expect-error - TODO: Fix this upstream at type-fest (Task 000)
     this._createWriteTransaction(this.tables, async () => {
       for (const table of this.tables) {
         await deleteStale(this, table.name);
@@ -30,7 +30,7 @@ export abstract class BaseDb extends Dexie {
     });
 
   public readonly clearAll = async () =>
-    // @ts-expect-error - TODO: Fix this upstream at type-fest
+    // @ts-expect-error - TODO: Fix this upstream at type-fest (Task 000)
     this._createWriteTransaction(this.tables, async () => {
       for (const table of this.tables) {
         await this.table(table.name).clear();
